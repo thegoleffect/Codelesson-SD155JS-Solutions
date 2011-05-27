@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+  <head>
+    <title></title>
+    <style type="text/css" media="screen">
+      .field {
+        display: block;
+        width: 100%;
+        float: left;
+        margin-bottom: 10px;
+      }
+      label {
+        width: 100px;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="twilio_txt_reminder_service">Twilio Txt Reminder Service</h1>
+    <form action="/reminder" method="post">
+      <div class="field">
+        <label for="phone_number">phone number</label><input type="text" name="phone_number" value="" id="phone_number">
+      </div>
+      
+      <div class="field">
+        <label for="message">message</label><textarea name="message" rows="8" cols="40"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="delay">delay (in seconds)</label><input type="text" name="delay" value="" id="delay">
+      </div>
+      
+      <p><input type="submit" value="Send &rarr;"></p>
+    </form>
+  </body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+  <head>
+    <title></title>
+  </head>
+  <body>
+    <div class="log"></div>
+    
+    <form id="send" action="/chat" method="POST">
+      <label for="message">Message</label><input type="text" name="message" value="" id="message">
+      <p><input type="submit" value="Send"></p>
+    </form>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js" type="text/javascript"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" charset="utf-8">
+      function append(msg){
+        // This function encapsulates writing to the chatlog
+        $(".log").append('<div class="msg">' + msg + '</div>')
+      }
+    
+      $(document).ready(function(){
+        // Prepopulate chat log
+        $.ajax({
+          url: "/log.json",
+          type: "GET",
+          success: function(d){
+            for(var i in d){
+              append(d[i]);
+            }
+          }
+        })
+        
+        // initialize socket.io (no var means this is a global variable)
+        socket = new io.Socket(null, {port: 3000}) // server is on port 3000
+        socket.connect() // connect
+        socket.on("message", function(msg){ // on message, write to chat log
+          console.log("message received")
+          append(msg)
+        })
+        
+        // On form submit:
+        $("#send").submit(function(e){
+          e.preventDefault() // prevent form submission
+          
+          var msg = $('#message').val() // grab message from the input field
+          socket.send(msg) // send message to server
+          append(msg) // client.broadcast does not send it back to you by default
+          
+          return false; // prevent form submission
+        })
+      })
+    </script>
+  </body>
+</html>
